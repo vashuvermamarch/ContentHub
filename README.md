@@ -70,6 +70,7 @@ NEXT_PUBLIC_TMDB_API_KEY=your_tmdb_key_here
 Get free API keys:
 - **GNews**: [gnews.io](https://gnews.io) (100 requests/day)
 - **TMDB**: [themoviedb.org](https://www.themoviedb.org/settings/api) (generous free tier)
+- **Social Media Feed**: No API key is required. As allowed by the assignment requirements, the Social Media API is fully mocked locally via `data/socialPosts.ts` and works offline without credentials.
 
 ### 3. Run Development Server
 

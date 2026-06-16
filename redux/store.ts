@@ -15,6 +15,7 @@ import favoritesReducer from './slices/favoritesSlice';
 import feedReducer from './slices/feedSlice';
 import { newsApi } from './api/newsApi';
 import { tmdbApi } from './api/tmdbApi';
+import { socialApi } from './api/socialApi';
 
 const rootReducer = combineReducers({
   preferences: preferencesReducer,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   feed: feedReducer,
   [newsApi.reducerPath]: newsApi.reducer,
   [tmdbApi.reducerPath]: tmdbApi.reducer,
+  [socialApi.reducerPath]: socialApi.reducer,
 });
 
 const persistConfig = {
@@ -40,7 +42,7 @@ export const makeStore = () => {
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
-      }).concat(newsApi.middleware, tmdbApi.middleware),
+      }).concat(newsApi.middleware, tmdbApi.middleware, socialApi.middleware),
   });
 
   const persistor = persistStore(store);

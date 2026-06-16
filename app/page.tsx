@@ -9,9 +9,9 @@ import ErrorState from '@/components/ui/ErrorState';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { useGetTopHeadlinesQuery, useSearchNewsQuery } from '@/redux/api/newsApi';
 import { useGetTrendingQuery, useSearchMoviesQuery } from '@/redux/api/tmdbApi';
+import { useGetSocialPostsQuery } from '@/redux/api/socialApi';
 import { useFeedInterleave, transformNewsArticle, transformTMDBMovie } from '@/hooks/useFeedInterleave';
 import { useDarkMode } from '@/hooks/useDarkMode';
-import { socialPosts } from '@/data/socialPosts';
 import { fallbackNewsArticles, fallbackMovies } from '@/data/mockFallbackData';
 import { CATEGORY_TO_GNEWS, TMDB_GENRES, NewsItem, MovieItem, SocialPost } from '@/types';
 import { setFeedItems } from '@/redux/slices/feedSlice';
@@ -67,6 +67,8 @@ export default function DashboardPage() {
     { query: searchQuery, page: 1 },
     { skip: !isSearching }
   );
+
+  const { data: socialData } = useGetSocialPostsQuery();
 
   const newsItems: NewsItem[] = useMemo(() => {
     const data = isSearching ? searchNewsData : headlinesData;
@@ -145,9 +147,9 @@ export default function DashboardPage() {
   }, [trendingData, searchMoviesData, isSearching, searchQuery, categories]);
 
   const filteredSocial: SocialPost[] = useMemo(() => {
-    let posts = socialPosts;
+    let posts = socialData || [];
     if (categories.length > 0) {
-      posts = socialPosts.filter((post) => {
+      posts = posts.filter((post) => {
         const tag = post.hashtag.toLowerCase().replace('#', '');
         if (tag === 'webdev') return categories.includes('technology');
         return categories.includes(tag as any);
@@ -164,7 +166,7 @@ export default function DashboardPage() {
       );
     }
     return posts;
-  }, [categories, searchQuery, isSearching]);
+  }, [socialData, categories, searchQuery, isSearching]);
 
   const interleavedItems = useFeedInterleave(newsItems, movieItems, filteredSocial);
 

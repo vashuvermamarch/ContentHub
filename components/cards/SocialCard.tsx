@@ -70,7 +70,9 @@ function SocialCardInner({ item, index = 0 }: SocialCardProps) {
               whileTap={{ scale: 1.3 }}
               onClick={() => dispatch(toggleFavorite(item))}
               className="flex items-center gap-1 rounded-full px-1 text-xs text-md-on-surface-variant transition-colors duration-200 hover:text-md-error active:scale-95"
-              data-testid={`favorite-${item.id}`}
+              data-testid={mounted ? `favorite-${item.id}` : undefined}
+              tabIndex={0}
+              style={{}}
             >
               <span>{mounted && isFavorite ? '❤️' : '🤍'}</span>
               {formatCompactNumber(item.likes)}

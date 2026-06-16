@@ -46,7 +46,9 @@ function NewsCardInner({ item, index = 0 }: NewsCardProps) {
         }}
         className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-md-inverse-surface/30 text-md-inverse-on-surface backdrop-blur-sm transition-all duration-200 hover:bg-md-inverse-surface/50 active:scale-95"
         aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-        data-testid={`favorite-${item.id}`}
+        data-testid={mounted ? `favorite-${item.id}` : undefined}
+        tabIndex={0}
+        style={{}}
       >
         <span className="text-sm">{mounted && isFavorite ? '❤️' : '🤍'}</span>
       </motion.button>

@@ -65,6 +65,7 @@ Create a `.env.local` file (or edit the existing one):
 ```
 NEXT_PUBLIC_GNEWS_API_KEY=your_gnews_key_here
 NEXT_PUBLIC_TMDB_API_KEY=your_tmdb_key_here
+NEXT_PUBLIC_SOCIAL_API_URL=https://api.mocksocial.com/v1/
 ```
 
 Get free API keys:

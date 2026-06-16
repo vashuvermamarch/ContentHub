@@ -2,9 +2,11 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { SocialPost } from '@/types';
 import { socialPosts } from '@/data/socialPosts';
 
+const SOCIAL_API_URL = process.env.NEXT_PUBLIC_SOCIAL_API_URL || 'https://api.mocksocial.com/v1/';
+
 export const socialApi = createApi({
   reducerPath: 'socialApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: SOCIAL_API_URL }),
   tagTypes: ['Social'],
   endpoints: (builder) => ({
     getSocialPosts: builder.query<SocialPost[], void>({

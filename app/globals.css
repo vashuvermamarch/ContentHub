@@ -1,26 +1,277 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* =============================================
+   Material You (MD3) Design System
+   Seed Color: Purple #6750A4
+   ============================================= */
+
+/* ===== MD3 Color Tokens — Light Mode ===== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core Surface System */
+  --color-md-background: #FFFBFE;
+  --color-md-on-background: #1C1B1F;
+  --color-md-surface: #FFFBFE;
+  --color-md-surface-container: #F3EDF7;
+  --color-md-surface-container-low: #F7F2FA;
+  --color-md-surface-container-high: #ECE6F0;
+  --color-md-surface-variant: #E7E0EC;
+  --color-md-on-surface: #1C1B1F;
+  --color-md-on-surface-variant: #49454F;
+
+  /* Primary */
+  --color-md-primary: #6750A4;
+  --color-md-on-primary: #FFFFFF;
+  --color-md-primary-container: #EADDFF;
+  --color-md-on-primary-container: #21005D;
+
+  /* Secondary */
+  --color-md-secondary: #625B71;
+  --color-md-on-secondary: #FFFFFF;
+  --color-md-secondary-container: #E8DEF8;
+  --color-md-on-secondary-container: #1D192B;
+
+  /* Tertiary */
+  --color-md-tertiary: #7D5260;
+  --color-md-on-tertiary: #FFFFFF;
+  --color-md-tertiary-container: #FFD8E4;
+  --color-md-on-tertiary-container: #31111D;
+
+  /* Error */
+  --color-md-error: #B3261E;
+  --color-md-error-container: #F9DEDC;
+  --color-md-on-error: #FFFFFF;
+
+  /* Outline & Misc */
+  --color-md-outline: #79747E;
+  --color-md-outline-variant: #CAC4D0;
+  --color-md-inverse-surface: #313033;
+  --color-md-inverse-on-surface: #F4EFF4;
+
+  /* Font */
+  --font-sans: 'Roboto', system-ui, -apple-system, sans-serif;
+
+  /* MD3 Easing */
+  --ease-md: cubic-bezier(0.2, 0, 0, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ===== MD3 Color Tokens — Dark Mode ===== */
+.dark {
+  --color-md-background: #141218;
+  --color-md-on-background: #E6E1E5;
+  --color-md-surface: #141218;
+  --color-md-surface-container: #211F26;
+  --color-md-surface-container-low: #1D1B20;
+  --color-md-surface-container-high: #2B2930;
+  --color-md-surface-variant: #49454F;
+  --color-md-on-surface: #E6E1E5;
+  --color-md-on-surface-variant: #CAC4D0;
+
+  --color-md-primary: #D0BCFF;
+  --color-md-on-primary: #381E72;
+  --color-md-primary-container: #4F378B;
+  --color-md-on-primary-container: #EADDFF;
+
+  --color-md-secondary: #CCC2DC;
+  --color-md-on-secondary: #332D41;
+  --color-md-secondary-container: #4A4458;
+  --color-md-on-secondary-container: #E8DEF8;
+
+  --color-md-tertiary: #EFB8C8;
+  --color-md-on-tertiary: #492532;
+  --color-md-tertiary-container: #633B48;
+  --color-md-on-tertiary-container: #FFD8E4;
+
+  --color-md-error: #F2B8B5;
+  --color-md-error-container: #8C1D18;
+  --color-md-on-error: #601410;
+
+  --color-md-outline: #938F99;
+  --color-md-outline-variant: #49454F;
+  --color-md-inverse-surface: #E6E1E5;
+  --color-md-inverse-on-surface: #313033;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ===== Tailwind v4 Theme Extension ===== */
+@theme {
+  /* MD3 Color Tokens */
+  --color-md-bg: var(--color-md-background);
+  --color-md-on-bg: var(--color-md-on-background);
+  --color-md-surface: var(--color-md-surface);
+  --color-md-surface-container: var(--color-md-surface-container);
+  --color-md-surface-container-low: var(--color-md-surface-container-low);
+  --color-md-surface-container-high: var(--color-md-surface-container-high);
+  --color-md-surface-variant: var(--color-md-surface-variant);
+  --color-md-on-surface: var(--color-md-on-surface);
+  --color-md-on-surface-variant: var(--color-md-on-surface-variant);
+  --color-md-primary: var(--color-md-primary);
+  --color-md-on-primary: var(--color-md-on-primary);
+  --color-md-primary-container: var(--color-md-primary-container);
+  --color-md-on-primary-container: var(--color-md-on-primary-container);
+  --color-md-secondary: var(--color-md-secondary);
+  --color-md-on-secondary: var(--color-md-on-secondary);
+  --color-md-secondary-container: var(--color-md-secondary-container);
+  --color-md-on-secondary-container: var(--color-md-on-secondary-container);
+  --color-md-tertiary: var(--color-md-tertiary);
+  --color-md-on-tertiary: var(--color-md-on-tertiary);
+  --color-md-tertiary-container: var(--color-md-tertiary-container);
+  --color-md-on-tertiary-container: var(--color-md-on-tertiary-container);
+  --color-md-error: var(--color-md-error);
+  --color-md-error-container: var(--color-md-error-container);
+  --color-md-on-error: var(--color-md-on-error);
+  --color-md-outline: var(--color-md-outline);
+  --color-md-outline-variant: var(--color-md-outline-variant);
+  --color-md-inverse-surface: var(--color-md-inverse-surface);
+  --color-md-inverse-on-surface: var(--color-md-inverse-on-surface);
+
+  /* MD3 Border Radii */
+  --radius-md-xs: 8px;
+  --radius-md-sm: 12px;
+  --radius-md-md: 16px;
+  --radius-md-lg: 24px;
+  --radius-md-xl: 28px;
+  --radius-md-2xl: 32px;
+  --radius-md-3xl: 48px;
+}
+
+/* ===== Base Styles ===== */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-md-background);
+  color: var(--color-md-on-background);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.5;
+  transition: background-color 0.3s var(--ease-md), color 0.3s var(--ease-md);
+}
+
+/* ===== Custom Scrollbar (MD3 tinted) ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-md-outline-variant);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-md-outline);
+}
+
+/* ===== MD3 Tonal Surface Gradient ===== */
+.md3-gradient-mesh {
+  background:
+    radial-gradient(ellipse at 15% 10%, var(--color-md-primary-container) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 20%, var(--color-md-secondary-container) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 90%, var(--color-md-tertiary-container) 0%, transparent 45%);
+  opacity: 0.25;
+}
+
+/* ===== MD3 Text on Primary surfaces ===== */
+.text-gradient-md3 {
+  background: linear-gradient(135deg, var(--color-md-primary) 0%, var(--color-md-tertiary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== MD3 State Layer Utility ===== */
+.state-layer {
+  position: relative;
+  overflow: hidden;
+}
+
+.state-layer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  background: var(--color-md-primary);
+  transition: opacity 0.2s var(--ease-md);
+  pointer-events: none;
+}
+
+.state-layer:hover::before {
+  opacity: 0.08;
+}
+
+.state-layer:active::before {
+  opacity: 0.12;
+}
+
+/* ===== Organic Blur Shapes (MD3 Signature) ===== */
+.md3-blur-shape {
+  position: absolute;
+  border-radius: 100px;
+  filter: blur(64px);
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+.dark .md3-blur-shape {
+  mix-blend-mode: screen;
+  opacity: 0.15;
+}
+
+/* ===== Animation Utilities ===== */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    var(--color-md-primary-container) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ===== Selection ===== */
+::selection {
+  background: var(--color-md-primary-container);
+  color: var(--color-md-on-primary-container);
+}
+
+/* ===== Focus Ring (MD3 style) ===== */
+:focus-visible {
+  outline: 2px solid var(--color-md-primary);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -194,9 +194,15 @@ Tests cover:
 - **Popular**: `/movie/popular`
 - Free tier with generous limits
 
-### Social Posts
-- Mock data in `/data/socialPosts.ts`
-- 16 realistic posts across multiple categories
+### Social Posts (Mock Social Media API)
+- Mock data in [`/data/socialPosts.ts`](file:///d:/web%20dev/PG%20AGI/contenthub/data/socialPosts.ts)
+- **16 realistic posts** spanning multiple categories (Technology, AI, Sports, Finance, Science, Health, Entertainment).
+- **Profile Handles & Hashtag Integration**:
+  - Posts map to specific authors/handles (e.g. `@techtoday`, `@devcommunity`, `@sportsfanatic`, `@airesearcher`).
+  - Posts are tagged with specific hashtags (e.g. `#AI`, `#WebDev`, `#Sports`, `#Finance`, `#Science`, `#Health`).
+- **Dynamic Filtering**:
+  - **Category-Based Filtering**: Selecting category preferences on the Settings page automatically filters the social feed to matching categories.
+  - **Search-Based Filtering**: Typing a specific hashtag (e.g., `#AI`) or a user handle (e.g., `@sportsfanatic`) in the search bar dynamically filters the social posts displayed.
 
 ---
 

@@ -13,7 +13,7 @@ import { useFeedInterleave, transformNewsArticle, transformTMDBMovie } from '@/h
 import { useDarkMode } from '@/hooks/useDarkMode';
 import { socialPosts } from '@/data/socialPosts';
 import { fallbackNewsArticles, fallbackMovies } from '@/data/mockFallbackData';
-import { CATEGORY_TO_GNEWS, NewsItem, MovieItem, SocialPost } from '@/types';
+import { CATEGORY_TO_GNEWS, TMDB_GENRES, NewsItem, MovieItem, SocialPost } from '@/types';
 import { setFeedItems } from '@/redux/slices/feedSlice';
 
 export default function DashboardPage() {
@@ -70,6 +70,7 @@ export default function DashboardPage() {
 
   const newsItems: NewsItem[] = useMemo(() => {
     const data = isSearching ? searchNewsData : headlinesData;
+    let list: NewsItem[] = [];
     if (!data?.articles || data.articles.length === 0) {
       const articles = isSearching
         ? fallbackNewsArticles.filter(
@@ -78,13 +79,33 @@ export default function DashboardPage() {
               a.description.toLowerCase().includes(searchQuery.toLowerCase())
           )
         : fallbackNewsArticles;
-      return articles.map((article, idx) => transformNewsArticle(article, idx));
+      list = articles.map((article, idx) => transformNewsArticle(article, idx));
+    } else {
+      list = data.articles.map((article, idx) => transformNewsArticle(article, idx));
     }
-    return data.articles.map((article, idx) => transformNewsArticle(article, idx));
-  }, [headlinesData, searchNewsData, isSearching, searchQuery]);
+
+    if (categories.length > 0 && !isSearching) {
+      list = list.filter((news) => {
+        const titleAndDesc = (news.title + ' ' + news.description).toLowerCase();
+        return categories.some((cat) => {
+          if (cat === 'technology' && (titleAndDesc.includes('tech') || titleAndDesc.includes('gpt') || titleAndDesc.includes('next.js') || titleAndDesc.includes('openai'))) return true;
+          if (cat === 'ai' && (titleAndDesc.includes('ai') || titleAndDesc.includes('gpt') || titleAndDesc.includes('intelligence') || titleAndDesc.includes('openai') || titleAndDesc.includes('model'))) return true;
+          if (cat === 'sports' && (titleAndDesc.includes('formula 1') || titleAndDesc.includes('grand prix') || titleAndDesc.includes('sport') || titleAndDesc.includes('race') || titleAndDesc.includes('monaco'))) return true;
+          if (cat === 'finance' && (titleAndDesc.includes('inflation') || titleAndDesc.includes('fed') || titleAndDesc.includes('economic') || titleAndDesc.includes('finance') || titleAndDesc.includes('bank') || titleAndDesc.includes('bloomberg'))) return true;
+          if (cat === 'science' && (titleAndDesc.includes('telescope') || titleAndDesc.includes('webb') || titleAndDesc.includes('science') || titleAndDesc.includes('quantum') || titleAndDesc.includes('space'))) return true;
+          if (cat === 'health' && (titleAndDesc.includes('vaccine') || titleAndDesc.includes('cancer') || titleAndDesc.includes('health') || titleAndDesc.includes('trial') || titleAndDesc.includes('clinical'))) return true;
+          if (cat === 'entertainment' && (titleAndDesc.includes('movie') || titleAndDesc.includes('film') || titleAndDesc.includes('show') || titleAndDesc.includes('music'))) return true;
+          if (cat === 'general') return true;
+          return false;
+        });
+      });
+    }
+    return list;
+  }, [headlinesData, searchNewsData, isSearching, searchQuery, categories]);
 
   const movieItems: MovieItem[] = useMemo(() => {
     const data = isSearching ? searchMoviesData : trendingData;
+    let list: MovieItem[] = [];
     if (!data?.results || data.results.length === 0) {
       const movies = isSearching
         ? fallbackMovies.filter(
@@ -93,21 +114,57 @@ export default function DashboardPage() {
               m.overview.toLowerCase().includes(searchQuery.toLowerCase())
           )
         : fallbackMovies;
-      return movies.map(transformTMDBMovie);
+      list = movies.map(transformTMDBMovie);
+    } else {
+      list = data.results.map(transformTMDBMovie);
     }
-    return data.results.map(transformTMDBMovie);
-  }, [trendingData, searchMoviesData, isSearching, searchQuery]);
+
+    if (categories.length > 0 && !isSearching) {
+      list = list.filter((movie) => {
+        return movie.genre_ids.some((genreId) => {
+          const genreName = TMDB_GENRES[genreId]?.toLowerCase();
+          if (!genreName) return false;
+          
+          if (categories.includes('science') || categories.includes('ai') || categories.includes('technology')) {
+            if (genreName.includes('sci-fi') || genreName.includes('science')) return true;
+          }
+          if (categories.includes('entertainment') || categories.includes('general')) {
+            if (genreName.includes('comedy') || genreName.includes('animation') || genreName.includes('family') || genreName.includes('romance') || genreName.includes('fantasy')) return true;
+          }
+          if (categories.includes('sports')) {
+            if (genreName.includes('action') || genreName.includes('adventure')) return true;
+          }
+          if (categories.includes('finance')) {
+            if (genreName.includes('documentary') || genreName.includes('drama') || genreName.includes('history')) return true;
+          }
+          return false;
+        });
+      });
+    }
+    return list;
+  }, [trendingData, searchMoviesData, isSearching, searchQuery, categories]);
 
   const filteredSocial: SocialPost[] = useMemo(() => {
-    if (!isSearching) return socialPosts;
-    const q = searchQuery.toLowerCase();
-    return socialPosts.filter(
-      (post) =>
-        post.content.toLowerCase().includes(q) ||
-        post.author.toLowerCase().includes(q) ||
-        post.hashtag.toLowerCase().includes(q)
-    );
-  }, [searchQuery, isSearching]);
+    let posts = socialPosts;
+    if (categories.length > 0) {
+      posts = socialPosts.filter((post) => {
+        const tag = post.hashtag.toLowerCase().replace('#', '');
+        if (tag === 'webdev') return categories.includes('technology');
+        return categories.includes(tag as any);
+      });
+    }
+
+    if (isSearching) {
+      const q = searchQuery.toLowerCase();
+      posts = posts.filter(
+        (post) =>
+          post.content.toLowerCase().includes(q) ||
+          post.author.toLowerCase().includes(q) ||
+          post.hashtag.toLowerCase().includes(q)
+      );
+    }
+    return posts;
+  }, [categories, searchQuery, isSearching]);
 
   const interleavedItems = useFeedInterleave(newsItems, movieItems, filteredSocial);
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -21,6 +21,11 @@ export default function Header() {
   const dispatch = useAppDispatch();
   const darkMode = useDarkMode();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-md-outline-variant/30 bg-md-surface/80 backdrop-blur-xl transition-colors duration-300">
@@ -80,13 +85,13 @@ export default function Header() {
             id="dark-mode-toggle"
           >
             <motion.span
-              key={darkMode ? 'moon' : 'sun'}
+              key={mounted ? (darkMode ? 'moon' : 'sun') : 'placeholder'}
               initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
               animate={{ rotate: 0, opacity: 1, scale: 1 }}
               exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
               transition={{ duration: 0.3, ease: [0.2, 0, 0, 1] }}
             >
-              {darkMode ? '☀️' : '🌙'}
+              {mounted ? (darkMode ? '☀️' : '🌙') : '🌙'}
             </motion.span>
           </motion.button>
 
